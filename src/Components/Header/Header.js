@@ -1,9 +1,10 @@
 import React from 'react';
 import './Header.scss';
 import { Link } from 'react-router-dom';
-import { ReactComponent as Logo } from '../../Assets/crown.svg'
+import { ReactComponent as Logo } from '../../Assets/crown.svg' //SVG syntax
 
-const Header = () => {
+import { auth } from '../../Firebase/Firebase'
+const Header = ({ currentUser }) => {
     return (
         <div className='header'>
             <Link className='logo-container' to="/sport-store">
@@ -16,6 +17,10 @@ const Header = () => {
                 <Link className='option' to='/sport-store/contact'>
                     CONTACT
                 </Link>
+                {currentUser ? (//user state ==! null
+                    <div className='option' onClick={() => auth.signOut()}>SIGN OUT</div>
+                ) : (
+                        <Link className='option' to='/sport-store/signin'>SIGN IN</Link>)}
             </div>
         </div>
     )
