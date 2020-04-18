@@ -39,7 +39,6 @@ class App extends React.Component {
               ...snapShot.data() //we spread the object with data
             }
           })
-          console.log(this.state);
         })
       } else { //user logs out
         this.setState({ currentUser: userAuth });//null
