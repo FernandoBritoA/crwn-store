@@ -13,6 +13,29 @@ const config = { //copied from firebase-app settings
     measurementId: "G-SCJFX0BG9L"
 }
 
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+    if (!userAuth) return;//userAuth doesnt exist (user registered){
+
+    const userRef = firestore.doc(`users/${userAuth.uid}`); //get back user reference at that location
+    const snapShot = await userRef.get(); //wheter or not thre is data there, if userauth is stored
+
+    //exists property: exists or not
+    if (!snapShot.exists) {//if it doesnt exist ; no data in that place, we create it
+        const { displayName, email } = userAuth;
+        const createdAt = new Date();
+
+        try {
+            await userRef.set({ //create
+                displayName, email, createdAt, ...additionalData
+            }
+            )
+        } catch (error) {
+            console.log('error creating user', error.mesage)
+        }
+    }
+    return userRef; //in case we need it
+}
+
 firebase.initializeApp(config);
 
 export const auth = firebase.auth(); //authentication
