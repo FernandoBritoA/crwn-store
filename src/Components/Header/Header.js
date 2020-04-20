@@ -7,7 +7,10 @@ import { auth } from "../../Firebase/Firebase";
 
 import { connect } from "react-redux";
 
-const Header = ({ currentUser }) => {
+import CartIcon from "../CartIcon/CartIcon";
+import CartDropdown from "../CartDropdown/CartDropdown";
+
+const Header = ({ currentUser, hidden }) => {
   return (
     <div className="header">
       <Link className="logo-container" to="/sport-store">
@@ -29,18 +32,23 @@ const Header = ({ currentUser }) => {
             SIGN IN
           </Link>
         )}
+        <CartIcon />
       </div>
+      {
+        hidden ? null : <CartDropdown /> //hide show
+      }
     </div>
   );
 };
 
 //function that allows us to acces the state
 //state being RootReducer
-const mapStateToProps = (state) => ({
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
   //RootReducer has an object that points to userReducer
   //userReducer returns currentUser = action.payload or initial state,
   //depending if actions triggered to update the value
-  currentUser: state.user.currentUser, //WILL BE CALLED WHENEVER STORE STATE CHANGES
+  currentUser, //: state.user.currentUser, //WILL BE CALLED WHENEVER STORE STATE CHANGES
+  hidden, //advanced nested destructuring
 }); //current user is now the null value, we can remove from app.js
 //Your mapStateToProps functions are expected to return an object.
 //This object, normally referred to as stateProps, will be merged as props to your connected component.
