@@ -1,3 +1,5 @@
+import { userActionTypes } from "./userTypes";
+
 const INITIAL_STATE = {
   currentUser: null,
 };
@@ -6,7 +8,7 @@ const INITIAL_STATE = {
 const userReducer = (state = INITIAL_STATE, action) => {
   //a reducer takes every action thats why we need a switch
   switch (action.type) {
-    case "SET_CURRENT_USER":
+    case userActionTypes.SET_CURRENT_USER: //"SET_CURRENT_USER"
       return {
         //creates new object
         ...state,

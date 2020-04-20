@@ -4,7 +4,7 @@ import Homepage from "./Pages/Homepage/Homepage";
 import ShopPage from "./Pages/ShopPage/ShopPage";
 import SignInSignUp from "./Pages/SignInSignUp/SignInSignUp";
 
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Header from "./Components/Header/Header";
 
 import { auth, createUserProfileDocument } from "./Firebase/Firebase";
@@ -66,6 +66,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(this.props.currentUser);
     return (
       <div>
         {/*we dont need this.state.currentUser bc redux*/}
@@ -75,12 +76,30 @@ class App extends React.Component {
           <Route exact path="/sport-store" component={Homepage} />{" "}
           {/*If the path is exactlu '/', render component*/}
           <Route exact path="/sport-store/shop" component={ShopPage} />
-          <Route exact path="/sport-store/signin" component={SignInSignUp} />
+          <Route
+            exact
+            path="/sport-store/signin"
+            render={
+              () =>
+                this.props.currentUser ? (
+                  <Redirect to="/sport-store" />
+                ) : (
+                  <SignInSignUp />
+                )
+              //render allows javascript; if user logged=true,
+              //redirect to homepage
+            }
+          />
         </Switch>
       </div>
     );
   }
 }
+
+const mapStateToProps = ({ user }) => ({
+  //same as state.user
+  currentUser: user.currentUser,
+});
 
 //inject newProp to App as a prop
 const mapDispatchToProps = (dispatch) => ({
@@ -93,7 +112,7 @@ const mapDispatchToProps = (dispatch) => ({
   //we are just dispatching the object
 });
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 //null because we dont need state props from our reducer
 //we dont use the first argument mapStateToProps
 
