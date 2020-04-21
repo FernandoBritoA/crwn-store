@@ -9,10 +9,13 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
     //we need to return a new array, ergo map
     //this is to know which array item is being increased
     return cartItems.map(
-      (item) =>
-        item.id === cartItemToAdd.id //if it is already in the cart
+      (item) => {
+        //console.log("item", item);
+        //console.log("...item", ...item);
+        return item.id === cartItemToAdd.id //if it is already in the cart
           ? { ...item, quantity: item.quantity + 1 } //spread cart item, and add 1
-          : { item } //else just add the whole item
+          : item; //or {...item}
+      } //else just add the whole item
     );
   } else {
     return [...cartItems, { ...cartItemToAdd, quantity: 1 }];

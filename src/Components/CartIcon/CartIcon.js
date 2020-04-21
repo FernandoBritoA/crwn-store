@@ -6,11 +6,13 @@ import { ReactComponent as ShoppingIcon } from "../../Assets/shopping-bag.svg";
 
 import "./CartIcon.scss";
 
-const CartIcon = ({ newToggleCartHidden }) => {
+import { selectCartItemsCount } from "../../Redux/Cart/cartSelectors";
+
+const CartIcon = ({ newToggleCartHidden, itemCount }) => {
   return (
     <div className="cart-icon" onClick={newToggleCartHidden}>
       <ShoppingIcon className="shopping-icon" />
-      <span className="item-count">0</span>
+      <span className="item-count">{itemCount}</span>
     </div>
   );
 };
@@ -20,4 +22,10 @@ const mapDispatchToProps = (dispatch) => ({
   //function that triggers the dispatch of toggleCartHidden
 }); //({}) -> returning an object
 
-export default connect(null, mapDispatchToProps)(CartIcon);
+//selector; we are getting cart, then cart items, then reducing them to show total
+//gets called anytime state changes, i.e. user log in
+const mapStateToProps = (/*{ cart: { cartItems } }*/ state) => ({
+  itemCount: selectCartItemsCount(state), //cartSelector function memoized selector
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CartIcon);
