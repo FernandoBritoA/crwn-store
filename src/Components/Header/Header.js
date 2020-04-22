@@ -10,6 +10,10 @@ import { connect } from "react-redux";
 import CartIcon from "../CartIcon/CartIcon";
 import CartDropdown from "../CartDropdown/CartDropdown";
 
+import { createStructuredSelector } from "reselect";
+import { selectCartHidden } from "../../Redux/Cart/cartSelectors";
+import { selectCurrentUser } from "../../Redux/User/userSelectors";
+
 const Header = ({ currentUser, hidden }) => {
   return (
     <div className="header">
@@ -41,6 +45,16 @@ const Header = ({ currentUser, hidden }) => {
   );
 };
 
+//more efficient way to do it, comparing it to the way we did it in the CartIcon component
+const mapStateToProps = createStructuredSelector({
+  //instead of passing it as a function
+  //automaticallly pass our top level state into
+  //each subsequent selector
+  currentUser: selectCurrentUser,
+  hidden: selectCartHidden,
+});
+
+/*
 //function that allows us to acces the state
 //state being RootReducer
 const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
@@ -52,7 +66,7 @@ const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
 }); //current user is now the null value, we can remove from app.js
 //Your mapStateToProps functions are expected to return an object.
 //This object, normally referred to as stateProps, will be merged as props to your connected component.
-
+*/
 //get properties from our reducers
 //CONNECT  lets you connect relevant state that your component may need from the store
 //and handles re-rendering the component if any of that "connected state" changes.

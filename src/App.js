@@ -3,6 +3,7 @@ import "./App.css";
 import Homepage from "./Pages/Homepage/Homepage";
 import ShopPage from "./Pages/ShopPage/ShopPage";
 import SignInSignUp from "./Pages/SignInSignUp/SignInSignUp";
+import CheckoutPage from "./Pages/Checkout/Checkout";
 
 import { Route, Switch, Redirect } from "react-router-dom";
 import Header from "./Components/Header/Header";
@@ -11,6 +12,9 @@ import { auth, createUserProfileDocument } from "./Firebase/Firebase";
 
 import { connect } from "react-redux";
 import { setCurrentUser } from "./Redux/User/userActions";
+
+import { selectCurrentUser } from "./Redux/User/userSelectors";
+import { createStructuredSelector } from "reselect";
 
 //The return of the mapDispatchToProps function will be merged to your connected component as props.
 //You may call them directly to dispatch its action. this.props.newProp()
@@ -75,6 +79,7 @@ class App extends React.Component {
           <Route exact path="/sport-store" component={Homepage} />{" "}
           {/*If the path is exactlu '/', render component*/}
           <Route exact path="/sport-store/shop" component={ShopPage} />
+          <Route exact path="/sport-store/checkout" component={CheckoutPage} />
           <Route
             exact
             path="/sport-store/signin"
@@ -95,9 +100,12 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = ({ user }) => ({
+/*const mapStateToProps = ({ user }) => ({
   //same as state.user
   currentUser: user.currentUser,
+});*/
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
 });
 
 //inject newProp to App as a prop
