@@ -24,3 +24,28 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
   //spread rest of the items,
   //spread item to add, and set quantity to 1
 };
+
+/////////////////////////////////////////////////////
+export const removeItemFromCart = (cartItems, cartItemToRemove) => {
+  const existingCartItem = cartItems.find(
+    (cartItem) => cartItem.id === cartItemToRemove.id
+  ); //if in the cartItems array one item is equal  to the cartItemToRemove
+  //return that item
+
+  if (existingCartItem.quantity === 1) {
+    //if that item quantity is 1
+    return cartItems.filter((cartItem) => cartItem.id !== cartItemToRemove.id);
+    //return all the items, except the one that matches the cartItemToRemove
+  } else {
+    //if this action is allowed, there must be items
+    return cartItems.map(
+      //if mapped item is equal to the item to remove
+      (cartItem) =>
+        cartItem.id === cartItemToRemove.id
+          ? //that item returns a new array with previous spreaded
+            //...cartItem properties, but reducing the quantity by one
+            { ...cartItem, quantity: cartItem.quantity - 1 }
+          : cartItem //keep the item the exact same
+    );
+  }
+};
