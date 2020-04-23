@@ -5,7 +5,14 @@ import rootReducer from "./rootReducer"; //Unnamed export
 import { persistStore } from "redux-persist";
 //allows browser to cache our store
 
-const middleWares = [logger]; //catch and log
+const middleWares = []; //catch and log
+
+//FOR LOGGING ONLY FOR DEVELOPMENT
+//access enviroment variable
+// when we npm build, it sets this variable to "production"
+if (process.env.NODE_ENV === "development") {
+  middleWares.push(logger);
+}
 
 const store = createStore(rootReducer, applyMiddleware(...middleWares));
 //spread into individual items
