@@ -78,7 +78,7 @@ class App extends React.Component {
           {/*Loads the first matching path, nothing else*/}
           <Route exact path="/sport-store" component={Homepage} />{" "}
           {/*If the path is exactlu '/', render component*/}
-          <Route exact path="/sport-store/shop" component={ShopPage} />
+          <Route path="/sport-store/shop" component={ShopPage} />
           <Route exact path="/sport-store/checkout" component={CheckoutPage} />
           <Route
             exact

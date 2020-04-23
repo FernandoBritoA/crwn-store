@@ -1,28 +1,25 @@
-import React from 'react';
-import ShopData from './ShopData';
-import CollectionPreview from '../../Components/CollectionPreview/CollectionPreview'
+import React from "react";
+import CollectionOverview from "../../Components/CollectionOverview/CollectionOverview";
+import { Route } from "react-router-dom";
+import CollectionPage from "../Collection/Collection";
 
-class ShopPage extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            collections: ShopData
-        }
-    }
-
-    render() {
-        const { collections } = this.state;
-        return (
-            <div className='shop-page'>
-                {
-                    collections.map(({ id, ...otherCollectionProps }) => ( //destructuring
-                        <CollectionPreview key={id} {...otherCollectionProps} />
-                    ))
-                }
-            </div>
-        )
-    }
-}
-
+//because in the app.js  the ShopPage component is nested in a route,
+//it automatically has access to the 3 objects
+const ShopPage = ({ match }) => {
+  return (
+    <div className="shop-page">
+      <Route exact path={`${match.path}`} component={CollectionOverview} />
+      <Route
+        exact
+        path={`${match.path}/:collectionId`}
+        component={CollectionPage}
+      />
+    </div>
+  );
+};
+//:categoryId -> allows us to acces this id as a parameter on the match object
+//when we are inside our category page
+//!params:{collectionId:"hats"}
+//path: "/sport-store/shop/:collectionId"
+//url: "/sport-store/shop/hats"
 export default ShopPage;
