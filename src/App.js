@@ -76,20 +76,16 @@ class App extends React.Component {
         <Header />
         <Switch>
           {/*Loads the first matching path, nothing else*/}
-          <Route exact path="/sport-store" component={Homepage} />{" "}
+          <Route exact path="/" component={Homepage} />{" "}
           {/*If the path is exactlu '/', render component*/}
-          <Route path="/sport-store/shop" component={ShopPage} />
-          <Route exact path="/sport-store/checkout" component={CheckoutPage} />
+          <Route path="/shop" component={ShopPage} />
+          <Route exact path="/checkout" component={CheckoutPage} />
           <Route
             exact
-            path="/sport-store/signin"
+            path="/signin"
             render={
               () =>
-                this.props.currentUser ? (
-                  <Redirect to="/sport-store" />
-                ) : (
-                  <SignInSignUp />
-                )
+                this.props.currentUser ? <Redirect to="/" /> : <SignInSignUp />
               //render allows javascript; if user logged=true,
               //redirect to homepage
             }

@@ -26,7 +26,7 @@ const CartDropdown = ({ cartItems, history, dispatch }) => (
     </div>
     <CustomButton
       onClick={() => {
-        history.push("/sport-store/checkout");
+        history.push("/checkout");
         dispatch(toggleCartHidden()); //!DISPATCH ACTION SHORTHAND
       }}
     >
