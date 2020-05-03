@@ -19,7 +19,9 @@ export const selectCollections = createSelector(
 
 export const selectCollectionsForPreview = createSelector(
   [selectCollections],
-  (collections) => Object.keys(collections).map((key) => collections[key])
+  (collections) =>
+    //if collections doesnt exist return empty array
+    collections ? Object.keys(collections).map((key) => collections[key]) : []
   //Object.key gets us all the keys fro the object and gives is in an array format
   //then we map our keys and return our collections at that key value
   //will give us an array of items we are trying to get
@@ -28,7 +30,7 @@ export const selectCollectionsForPreview = createSelector(
 export const selectCollection = (collectionUrlParam) =>
   createSelector(
     [selectCollections],
-    (collections) => collections[collectionUrlParam]
+    (collections) => (collections ? collections[collectionUrlParam] : null)
     //instead of the collections.find
   );
 
