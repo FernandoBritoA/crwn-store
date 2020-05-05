@@ -1,11 +1,16 @@
 import React from "react";
 import "./CollectionPreview.scss";
 import CollectionItem from "../CollectionItem/CollectionItem";
+import { Link } from "react-router-dom";
 
 const CollectionPreview = ({ title, items }) => {
   return (
     <div className="collection-preview">
-      <h1 className="title">{title.toUpperCase()}</h1>
+      <h1>
+        <Link className="title" to={`/shop/${title.toLowerCase()}`}>
+          {title.toUpperCase()}
+        </Link>
+      </h1>
       <div className="preview">
         {items
           .filter((item, idx) => idx < 4) // we just want 4 items

@@ -1,20 +1,36 @@
-import { userActionTypes } from "./userTypes";
+import userActionTypes from "./userTypes";
 
 const INITIAL_STATE = {
   currentUser: null,
+  error: null,
 };
 
 //if state is ever undefined, use default value
 const userReducer = (state = INITIAL_STATE, action) => {
   //a reducer takes every action thats why we need a switch
   switch (action.type) {
-    case userActionTypes.SET_CURRENT_USER: //"SET_CURRENT_USER"
+    //we can put two cases that do the same return state
+    case userActionTypes.SIGN_IN_SUCCESS:
+      //case userActionTypes.EMAIL_SIGN_IN_SUCCESS:
       return {
-        //creates new object
         ...state,
         currentUser: action.payload,
-        //"object spread" copies all properties from the original object (state),
-        //into a NEW OBJECT, and includes the new value for our changed "currentUser" property
+        error: null, //clear the error in success case
+      };
+
+    case userActionTypes.SIGN_OUT_SUCCESS:
+      return {
+        ...state,
+        currentUser: null,
+        error: null,
+      };
+    case userActionTypes.SIGN_IN_FAILURE:
+    case userActionTypes.SIGN_OUT_FAILURE:
+    case userActionTypes.SIGN_UP_FAILURE:
+      //case userActionTypes.EMAIL_SIGN_IN_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
       };
 
     default:

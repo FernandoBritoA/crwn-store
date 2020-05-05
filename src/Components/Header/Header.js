@@ -3,8 +3,6 @@ import "./Header.scss";
 //import { Link } from "react-router-dom";
 import { ReactComponent as Logo } from "../../Assets/crown.svg"; //SVG syntax
 
-import { auth } from "../../Firebase/Firebase";
-
 import { connect } from "react-redux";
 
 import CartIcon from "../CartIcon/CartIcon";
@@ -13,6 +11,8 @@ import CartDropdown from "../CartDropdown/CartDropdown";
 import { createStructuredSelector } from "reselect";
 import { selectCartHidden } from "../../Redux/Cart/cartSelectors";
 import { selectCurrentUser } from "../../Redux/User/userSelectors";
+
+import { signOutStart } from "../../Redux/User/userActions";
 
 /*import {
   HeaderContainer,
@@ -23,7 +23,7 @@ import { selectCurrentUser } from "../../Redux/User/userSelectors";
 } from "./header.styles";*/
 import * as sc from "./header.styles";
 
-const Header = ({ currentUser, hidden }) => {
+const Header = ({ currentUser, hidden, signOutStart }) => {
   return (
     <sc.HeaderContainer>
       <sc.LogoContainer to="/">
@@ -33,7 +33,7 @@ const Header = ({ currentUser, hidden }) => {
         <sc.OptionLink to="/shop">SHOP</sc.OptionLink>
         <sc.OptionLink to="/contact">CONTACT</sc.OptionLink>
         {currentUser ? ( //user state ==! null
-          <sc.OptionLink as="div" onClick={() => auth.signOut()}>
+          <sc.OptionLink as="div" onClick={signOutStart}>
             SIGN OUT
           </sc.OptionLink>
         ) : (
@@ -57,6 +57,10 @@ const mapStateToProps = createStructuredSelector({
   hidden: selectCartHidden,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  signOutStart: () => dispatch(signOutStart()),
+});
+
 /*
 //function that allows us to acces the state
 //state being RootReducer
@@ -74,7 +78,7 @@ const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
 //CONNECT  lets you connect relevant state that your component may need from the store
 //and handles re-rendering the component if any of that "connected state" changes.
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
 
 // here we call `connect` and pass it our mapStateToProps function
 // which in turn returns a function.

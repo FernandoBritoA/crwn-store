@@ -8,18 +8,12 @@ import CheckoutPage from "./Pages/Checkout/Checkout";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Header from "./Components/Header/Header";
 
-import {
-  auth,
-  createUserProfileDocument,
-  //!addCollectionAndDocuments,
-} from "./Firebase/Firebase";
-
 import { connect } from "react-redux";
-import { setCurrentUser } from "./Redux/User/userActions";
 
 import { selectCurrentUser } from "./Redux/User/userSelectors";
 import { createStructuredSelector } from "reselect";
 
+import { checkUserSession } from "./Redux/User/userActions";
 //!import { selectCollectionsForPreview } from "./Redux/Shop/shopSelectors";
 
 //The return of the mapDispatchToProps function will be merged to your connected component as props.
@@ -29,24 +23,8 @@ class App extends React.Component {
 
   //component mount on the dom
   componentDidMount() {
-    //method from 'firebase/auth' to get user registered *open subscription
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(
-      async (userAuth) => {
-        if (userAuth) {
-          const userRef = await createUserProfileDocument(userAuth); //get back userRef
-          userRef.onSnapshot((snapShot) => {
-            this.props.newProp({
-              id: snapShot.id,
-              ...snapShot.data(), //we spread the object with data
-            });
-          });
-        } else {
-          //user logs out
-          this.props.newProp(userAuth); //null
-        }
-      },
-      (error) => console.log(error)
-    );
+    const { checkUserSession } = this.props;
+    checkUserSession();
   }
 
   componentWillUnmount() {
@@ -85,9 +63,8 @@ const mapStateToProps = createStructuredSelector({
   //!collectionsArray: selectCollectionsForPreview,
 });
 
-//inject newProp to App as a prop
 const mapDispatchToProps = (dispatch) => ({
-  newProp: (user) => dispatch(setCurrentUser(user)),
+  checkUserSession: () => dispatch(checkUserSession()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

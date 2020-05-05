@@ -5,7 +5,13 @@ import rootReducer from "./rootReducer"; //Unnamed export
 import { persistStore } from "redux-persist";
 //allows browser to cache our store
 
-const middleWares = []; //catch and log
+//!SAGAS
+import createSagaMiddleware from "redux-saga"; //!REDUX SAGA
+import rootSaga from "./rootSaga";
+
+const sagaMiddleware = createSagaMiddleware();
+
+const middleWares = [sagaMiddleware]; //catch and log
 
 //FOR LOGGING ONLY FOR DEVELOPMENT
 //access enviroment variable
@@ -16,6 +22,9 @@ if (process.env.NODE_ENV === "development") {
 
 const store = createStore(rootReducer, applyMiddleware(...middleWares));
 //spread into individual items
+
+//!SAGAS
+sagaMiddleware.run(rootSaga);
 
 const persistor = persistStore(store);
 //persisted version of our store

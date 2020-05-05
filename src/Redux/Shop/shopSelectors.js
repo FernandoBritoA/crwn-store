@@ -34,6 +34,18 @@ export const selectCollection = (collectionUrlParam) =>
     //instead of the collections.find
   );
 
+export const selectIsCollectionFetching = createSelector(
+  [selectShop],
+  (shop) => shop.isFetching
+);
+
+export const selectIsCollectionsLoaded = createSelector(
+  [selectShop],
+  (shop) => !!shop.collections
+  //*  !! -> return boolean value
+  //if collection is loaded we get true, otherwise we get false (null collection value)
+);
+
 //DATA NORMALIZATION... changing tht array to an object
 //storing lists of data in objects instead of arrays
 //its faster because it only look for the corresponding property
