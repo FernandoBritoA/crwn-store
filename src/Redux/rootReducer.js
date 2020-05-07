@@ -7,6 +7,7 @@ import shopReducer from "./Shop/shopReducer";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 //actual localStorage on our window browser
+//we also have session storage available
 
 const persistConfig = {
   key: "root",

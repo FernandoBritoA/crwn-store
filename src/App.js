@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import Homepage from "./Pages/Homepage/Homepage";
 import ShopPage from "./Pages/ShopPage/ShopPage";
@@ -18,45 +18,36 @@ import { checkUserSession } from "./Redux/User/userActions";
 
 //The return of the mapDispatchToProps function will be merged to your connected component as props.
 //You may call them directly to dispatch its action. this.props.newProp()
-class App extends React.Component {
-  unsubscribeFromAuth = null; //property on our class
-
-  //component mount on the dom
-  componentDidMount() {
-    const { checkUserSession } = this.props;
+const App = ({ checkUserSession, currentUser }) => {
+  useEffect(() => {
     checkUserSession();
-  }
+  }, [checkUserSession]); //this behaves like component did mount
+  //we can pass it in because we know it isnt goint to change
+  //app.js doesnt have parent app
 
-  componentWillUnmount() {
-    this.unsubscribeFromAuth(); //close subscription when unmounting
-  }
-
-  render() {
-    return (
-      <div>
-        {/*we dont need this.state.currentUser bc redux*/}
-        <Header />
-        <Switch>
-          {/*Loads the first matching path, nothing else*/}
-          <Route exact path="/" component={Homepage} />{" "}
-          {/*If the path is exactlu '/', render component*/}
-          <Route path="/shop" component={ShopPage} />
-          <Route exact path="/checkout" component={CheckoutPage} />
-          <Route
-            exact
-            path="/signin"
-            render={
-              () =>
-                this.props.currentUser ? <Redirect to="/" /> : <SignInSignUp />
-              //render allows javascript; if user logged=true,
-              //redirect to homepage
-            }
-          />
-        </Switch>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      {/*we dont need this.state.currentUser bc redux*/}
+      <Header />
+      <Switch>
+        {/*Loads the first matching path, nothing else*/}
+        <Route exact path="/" component={Homepage} />{" "}
+        {/*If the path is exactlu '/', render component*/}
+        <Route path="/shop" component={ShopPage} />
+        <Route exact path="/checkout" component={CheckoutPage} />
+        <Route
+          exact
+          path="/signin"
+          render={
+            () => (currentUser ? <Redirect to="/" /> : <SignInSignUp />)
+            //render allows javascript; if user logged=true,
+            //redirect to homepage
+          }
+        />
+      </Switch>
+    </div>
+  );
+};
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,

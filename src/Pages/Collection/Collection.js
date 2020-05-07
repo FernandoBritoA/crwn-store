@@ -3,8 +3,24 @@ import "./Collection.scss";
 import CollectionItem from "../../Components/CollectionItem/CollectionItem";
 import { connect } from "react-redux";
 import { selectCollection } from "../../Redux/Shop/shopSelectors";
+//import { firestore } from "../../Firebase/Firebase";
+//import  { useEffect } from "react";
 
 const CollectionPage = ({ collection }) => {
+  //!useEffect as ComponentWillUnmount() example
+  /*useEffect(() => {
+    console.log("I am subscribing");
+    const unsubscribeFromCollections = firestore
+      .collection("collections")
+      .onSnapshot((snapshot) => console.log(snapshot));
+    //!CLEAN UP FUNCTION
+    return () => {
+      console.log("I am unsubscribing");
+      unsubscribeFromCollections();
+    };
+  }, []); //use when mounting*/
+  //use effect will call the clean up function when component unmounts
+
   const { title, items } = collection;
   return (
     <div className="collection-page">

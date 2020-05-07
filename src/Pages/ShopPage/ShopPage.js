@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 //import CollectionOverview from "../../Components/CollectionOverview/CollectionOverview";
 //import CollectionPage from "../Collection/Collection";
 import { Route } from "react-router-dom";
@@ -19,38 +19,45 @@ import CollectionPageContainer from "../Collection/collectionPageContainer";
 
 //because in the app.js  the ShopPage component is nested in a route,
 //it automatically has access to the 3 objects
-class ShopPage extends React.Component {
-  componentDidMount() {
+const ShopPage = ({ fetchCollectionsStart, match }) => {
+  /*componentDidMount() {
     const { fetchCollectionsStart } = this.props;
     fetchCollectionsStart();
-  }
+  }*/
 
-  render() {
-    const { match } = this.props;
-    //!const { isCollectionLoaded } = this.props;
-    //! const { isCollectionFetching } = this.props;
-    //prop dispatched
-    //instead of loading, now true/false is in the reducer
-    //const { loading } = this.state;
+  //app.js checkSession cause component to rerender, firing fetchCollection() twice
+  useEffect(() => {
+    fetchCollectionsStart();
+  }, [fetchCollectionsStart]);
+  //only rerender if fetchCollectionsStart changes
+  //we know fetchCollectionsStart is not going to rerender as it is dispatched as a prop
+  //we only put it to avoid the warning message, [] should work
+  //warning comes because useEffect takes fetchCollectionsStart as a prop, therefore if it changes from the
+  //parent (inexistent in this case), it should rerender
 
-    return (
-      <div className="shop-page">
-        <Route
-          exact
-          path={`${match.path}`}
-          component={CollectionOverviewContainer}
-        />
-        {/*render is a method that takes a function, where the parameters in the function are 
+  //!const { isCollectionLoaded } = this.props;
+  //! const { isCollectionFetching } = this.props;
+  //prop dispatched
+  //instead of loading, now true/false is in the reducer
+  //const { loading } = this.state;
+
+  return (
+    <div className="shop-page">
+      <Route
+        exact
+        path={`${match.path}`}
+        component={CollectionOverviewContainer}
+      />
+      {/*render is a method that takes a function, where the parameters in the function are 
           just the parameters that the component will recerive. (match, location, history in this case)*/}
-        <Route
-          exact
-          path={`${match.path}/:collectionId`}
-          component={CollectionPageContainer}
-        />
-      </div>
-    );
-  }
-}
+      <Route
+        exact
+        path={`${match.path}/:collectionId`}
+        component={CollectionPageContainer}
+      />
+    </div>
+  );
+};
 
 const mapDispatchToProps = (dispatch) => ({
   fetchCollectionsStart: () => dispatch(fetchCollectionsStart()),
